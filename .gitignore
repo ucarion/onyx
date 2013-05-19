@@ -20,3 +20,4 @@ doc/
 # C stuff
 Makefile
 *.o
+*.bundle
