@@ -8,4 +8,6 @@ Gem::Specification.new do |s|
   s.email       = 'ulyssecarion@gmail.com'
   s.files       = ["lib/onyx.rb"]
   s.homepage    = 'https://github.com/ulyssecarion/onyx'
+  s.files       =  Dir.glob('lib/**/*.rb') + Dir.glob('ext/**/*.{c,h,rb}')
+  s.extensions  = ['ext/onyx/extconf.rb']
 end
