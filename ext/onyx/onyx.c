@@ -24,8 +24,6 @@ VALUE method_move_new(VALUE class, VALUE from, VALUE to, VALUE piece, VALUE capt
     MoveWrapper *one;
     int move;
 
-    printf("%d\n", RTEST(capture));
-
     move = new_move(NUM2INT(from), NUM2INT(to), NUM2INT(piece), RTEST(capture),  NUM2INT(flag));
     moveWrapper = Data_Make_Struct(cMove, MoveWrapper, 0, free, one);
 
