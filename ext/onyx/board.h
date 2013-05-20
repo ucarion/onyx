@@ -1,6 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <stdlib.h>
+#include <stdbool.h>
+
 typedef unsigned long long Bitboard;
 
 typedef struct {
@@ -32,5 +35,7 @@ typedef struct {
 
     bool white_to_move;
 } Board;
+
+Board* new_empty_board();
 
 #endif
