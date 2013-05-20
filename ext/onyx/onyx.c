@@ -3,6 +3,7 @@
 void Init_onyx() {
     mOnyx = rb_define_module("Onyx");
     cMove = rb_define_class_under(mOnyx, "Move", rb_cObject);
+    cBoard = rb_define_class_under(mOnyx, "Board", rb_cObject);
 
     rb_define_singleton_method(cMove, "new", method_move_new, 5);
     rb_define_method(cMove, "from", method_move_from, 0);
@@ -11,6 +12,9 @@ void Init_onyx() {
     rb_define_method(cMove, "capture?", method_move_capture, 0);
     rb_define_method(cMove, "flag", method_move_flag, 0);
     rb_define_method(cMove, "promotion?", method_move_promotion, 0);
+
+    rb_define_singleton_method(cBoard, "new", method_board_new, 0);
+    rb_define_method(cBoard, "set", method_board_set, 2);
 }
 
 int unwrap_move(VALUE move) {
@@ -23,6 +27,8 @@ VALUE method_move_new(VALUE class, VALUE from, VALUE to, VALUE piece, VALUE capt
     VALUE moveWrapper;
     MoveWrapper *one;
     int move;
+
+    printf("Hi!\n");
 
     move = new_move(NUM2INT(from), NUM2INT(to), NUM2INT(piece), RTEST(capture),  NUM2INT(flag));
     moveWrapper = Data_Make_Struct(cMove, MoveWrapper, 0, free, one);
@@ -87,4 +93,57 @@ VALUE method_move_promotion(VALUE self) {
     if (is_promotion(move))
         return Qtrue;
     return Qfalse;
+}
+
+// Board methods
+VALUE method_board_new(VALUE class) {
+    VALUE rb_board;
+    Board *board = new_empty_board();
+
+    rb_board = Data_Make_Struct(cBoard, Board, 0, free, board);
+
+    rb_obj_call_init(rb_board, 0, 0);
+
+    return rb_board;
+}
+
+VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName) {
+    Board* board;
+    char *piece;
+    int position;
+    Bitboard bitmap;
+
+    Data_Get_Struct(self, Board, board);
+    piece = RSTRING_PTR(rb_any_to_s(pieceName));
+    position = NUM2INT(positionVal);
+    bitmap = square_at(position);
+
+    if (strcmp(piece, "white_pawn"))
+        board->white_pawns |= bitmap;
+    else if (strcmp(piece, "black_pawn"))
+        board->black_pawns |= bitmap;
+    else if (strcmp(piece, "white_knight"))
+        board->white_knights |= bitmap;
+    else if (strcmp(piece, "black_knight"))
+        board->black_knights |= bitmap;
+    else if (strcmp(piece, "white_bishop"))
+        board->white_bishops |= bitmap;
+    else if (strcmp(piece, "black_bishop"))
+        board->black_bishops |= bitmap;
+    else if (strcmp(piece, "white_rook"))
+        board->white_rooks |= bitmap;
+    else if (strcmp(piece, "black_rook"))
+        board->black_rooks |= bitmap;
+    else if (strcmp(piece, "white_queen"))
+        board->white_queens |= bitmap;
+    else if (strcmp(piece, "black_queen"))
+        board->black_queens |= bitmap;
+    else if (strcmp(piece, "white_king"))
+        board->white_king |= bitmap;
+    else if (strcmp(piece, "black_king"))
+        board->black_king |= bitmap;
+    else
+        rb_raise(rb_eStandardError, "Unknown piece");
+
+    return Qnil;
 }
