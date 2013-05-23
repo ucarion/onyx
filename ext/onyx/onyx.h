@@ -26,6 +26,21 @@ VALUE method_move_promotion(VALUE self);
 
 VALUE method_board_new(VALUE class);
 VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName);
+VALUE method_board_get(VALUE self, VALUE positionVal);
+VALUE method_board_white_to_move(VALUE self);
+VALUE method_board_set_white_to_move(VALUE self, VALUE whiteToMove);
+VALUE method_board_w_oo(VALUE self);
+VALUE method_board_set_w_oo(VALUE self, VALUE w_oo);
+VALUE method_board_w_ooo(VALUE self);
+VALUE method_board_set_w_ooo(VALUE self, VALUE w_oo);
+VALUE method_board_b_oo(VALUE self);
+VALUE method_board_set_b_oo(VALUE self, VALUE b_oo);
+VALUE method_board_b_ooo(VALUE self);
+VALUE method_board_set_b_ooo(VALUE self, VALUE b_oo);
+VALUE method_board_ep(VALUE self);
+VALUE method_board_set_ep(VALUE self, VALUE ep);
+VALUE method_board_fmr(VALUE self);
+VALUE method_board_set_fmr(VALUE self, VALUE fmr);
 
 void Init_onyx();
 

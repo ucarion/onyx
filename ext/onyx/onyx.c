@@ -15,6 +15,21 @@ void Init_onyx() {
 
     rb_define_singleton_method(cBoard, "new", method_board_new, 0);
     rb_define_method(cBoard, "set", method_board_set, 2);
+    rb_define_method(cBoard, "[]", method_board_get, 1);
+    rb_define_method(cBoard, "white_to_move?", method_board_white_to_move, 0);
+    rb_define_method(cBoard, "white_to_move=", method_board_set_white_to_move, 1);
+    rb_define_method(cBoard, "white_castle_k?", method_board_w_oo, 0);
+    rb_define_method(cBoard, "white_castle_k=", method_board_set_w_oo, 1);
+    rb_define_method(cBoard, "white_castle_q?", method_board_w_ooo, 0);
+    rb_define_method(cBoard, "white_castle_q=", method_board_set_w_ooo, 1);
+    rb_define_method(cBoard, "black_castle_k?", method_board_b_oo, 0);
+    rb_define_method(cBoard, "black_castle_k=", method_board_set_b_oo, 1);
+    rb_define_method(cBoard, "black_castle_q?", method_board_b_ooo, 0);
+    rb_define_method(cBoard, "black_castle_q=", method_board_set_b_ooo, 1);
+    rb_define_method(cBoard, "en_passant_loc", method_board_ep, 0);
+    rb_define_method(cBoard, "en_passant_loc=", method_board_set_ep, 1);
+    rb_define_method(cBoard, "fifty_move_rule", method_board_fmr, 0);
+    rb_define_method(cBoard, "fifty_move_rule=", method_board_set_fmr, 1);
 }
 
 int unwrap_move(VALUE move) {
@@ -27,8 +42,6 @@ VALUE method_move_new(VALUE class, VALUE from, VALUE to, VALUE piece, VALUE capt
     VALUE moveWrapper;
     MoveWrapper *one;
     int move;
-
-    printf("Hi!\n");
 
     move = new_move(NUM2INT(from), NUM2INT(to), NUM2INT(piece), RTEST(capture),  NUM2INT(flag));
     moveWrapper = Data_Make_Struct(cMove, MoveWrapper, 0, free, one);
@@ -114,36 +127,224 @@ VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName) {
     Bitboard bitmap;
 
     Data_Get_Struct(self, Board, board);
-    piece = RSTRING_PTR(rb_any_to_s(pieceName));
+    piece = RSTRING_PTR(rb_inspect(pieceName));
     position = NUM2INT(positionVal);
     bitmap = square_at(position);
 
-    if (strcmp(piece, "white_pawn"))
+    if (!strcmp(piece, ":white_pawn"))
         board->white_pawns |= bitmap;
-    else if (strcmp(piece, "black_pawn"))
+    else if (!strcmp(piece, ":black_pawn"))
         board->black_pawns |= bitmap;
-    else if (strcmp(piece, "white_knight"))
+    else if (!strcmp(piece, ":white_knight"))
         board->white_knights |= bitmap;
-    else if (strcmp(piece, "black_knight"))
+    else if (!strcmp(piece, ":black_knight"))
         board->black_knights |= bitmap;
-    else if (strcmp(piece, "white_bishop"))
+    else if (!strcmp(piece, ":white_bishop"))
         board->white_bishops |= bitmap;
-    else if (strcmp(piece, "black_bishop"))
+    else if (!strcmp(piece, ":black_bishop"))
         board->black_bishops |= bitmap;
-    else if (strcmp(piece, "white_rook"))
+    else if (!strcmp(piece, ":white_rook"))
         board->white_rooks |= bitmap;
-    else if (strcmp(piece, "black_rook"))
+    else if (!strcmp(piece, ":black_rook"))
         board->black_rooks |= bitmap;
-    else if (strcmp(piece, "white_queen"))
+    else if (!strcmp(piece, ":white_queen"))
         board->white_queens |= bitmap;
-    else if (strcmp(piece, "black_queen"))
+    else if (!strcmp(piece, ":black_queen"))
         board->black_queens |= bitmap;
-    else if (strcmp(piece, "white_king"))
+    else if (!strcmp(piece, ":white_king"))
         board->white_king |= bitmap;
-    else if (strcmp(piece, "black_king"))
+    else if (!strcmp(piece, ":black_king"))
         board->black_king |= bitmap;
     else
         rb_raise(rb_eStandardError, "Unknown piece");
+
+    return Qnil;
+}
+
+VALUE method_board_get(VALUE self, VALUE positionVal) {
+    Board* board;
+    int position;
+    Bitboard bitmap;
+
+    Data_Get_Struct(self, Board, board);
+    position = NUM2INT(positionVal);
+    bitmap = square_at(position);
+
+    if (board->white_pawns & bitmap)
+        return ID2SYM(rb_intern("white_pawn"));
+    else if (board->black_pawns & bitmap)
+        return ID2SYM(rb_intern("black_pawn"));
+    else if (board->white_knights & bitmap)
+        return ID2SYM(rb_intern("white_knight"));
+    else if (board->black_knights & bitmap)
+        return ID2SYM(rb_intern("black_knight"));
+    else if (board->white_bishops & bitmap)
+        return ID2SYM(rb_intern("white_bishop"));
+    else if (board->black_bishops & bitmap)
+        return ID2SYM(rb_intern("black_bishop"));
+    else if (board->white_rooks & bitmap)
+        return ID2SYM(rb_intern("white_rook"));
+    else if (board->black_rooks & bitmap)
+        return ID2SYM(rb_intern("black_rook"));
+    else if (board->white_queens & bitmap)
+        return ID2SYM(rb_intern("white_queen"));
+    else if (board->black_queens & bitmap)
+        return ID2SYM(rb_intern("black_queen"));
+    else if (board->white_king & bitmap)
+        return ID2SYM(rb_intern("white_king"));
+    else if (board->black_king & bitmap)
+        return ID2SYM(rb_intern("black_king"));
+    else
+        return Qnil;
+}
+
+VALUE method_board_white_to_move(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (board->white_to_move)
+        return Qtrue;
+    return Qfalse;
+}
+
+VALUE method_board_set_white_to_move(VALUE self, VALUE whiteToMove) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (RTEST(whiteToMove))
+        board->white_to_move = true;
+    else
+        board->white_to_move = false;
+
+    return Qnil;
+}
+
+VALUE method_board_w_oo(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (board->white_castle_k)
+        return Qtrue;
+    return Qfalse;
+}
+
+VALUE method_board_set_w_oo(VALUE self, VALUE w_oo) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (RTEST(w_oo))
+        board->white_castle_k = true;
+    else
+        board->white_castle_k = false;
+
+    return Qnil;
+}
+
+VALUE method_board_w_ooo(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (board->white_castle_q)
+        return Qtrue;
+    return Qfalse;
+}
+
+VALUE method_board_set_w_ooo(VALUE self, VALUE w_ooo) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (RTEST(w_ooo))
+        board->white_castle_q = true;
+    else
+        board->white_castle_q = false;
+
+    return Qnil;
+}
+
+VALUE method_board_b_oo(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (board->black_castle_k)
+        return Qtrue;
+    return Qfalse;
+}
+
+VALUE method_board_set_b_oo(VALUE self, VALUE b_oo) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (RTEST(b_oo))
+        board->black_castle_k = true;
+    else
+        board->black_castle_k = false;
+
+    return Qnil;
+}
+
+VALUE method_board_b_ooo(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (board->black_castle_q)
+        return Qtrue;
+    return Qfalse;
+}
+
+VALUE method_board_set_b_ooo(VALUE self, VALUE b_ooo) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    if (RTEST(b_ooo))
+        board->black_castle_q = true;
+    else
+        board->black_castle_q = false;
+
+    return Qnil;
+}
+
+VALUE method_board_ep(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    return INT2NUM(board->en_passant_loc);
+}
+
+VALUE method_board_set_ep(VALUE self, VALUE ep) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    board->en_passant_loc = NUM2INT(ep);
+
+    return Qnil;
+}
+
+VALUE method_board_fmr(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    return INT2NUM(board->fifty_move_rule);    
+}
+
+VALUE method_board_set_fmr(VALUE self, VALUE fmr) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    board->fifty_move_rule = NUM2INT(fmr);
 
     return Qnil;
 }
