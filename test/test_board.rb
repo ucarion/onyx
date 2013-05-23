@@ -41,4 +41,13 @@ BOARD
   def test_can_read_from_fen
     assert_equal(@board_to_s, @board.to_s)
   end
+
+  def test_can_use_accessor_methods
+    assert_nothing_raised do
+      @board.white_castle_k?
+      @board.white_castle_q?
+      @board.black_castle_k?
+      @board.black_castle_q?
+    end
+  end
 end
