@@ -29,6 +29,7 @@ Black can castle: O-O O-O-O
 En passant loc: -1
 Fifty move rule: 0
 BOARD
+    @board = Onyx::Board.new_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
   end
 
   def test_can_create_board
@@ -38,7 +39,6 @@ BOARD
   end
 
   def test_can_read_from_fen
-    board = Onyx::Board.new_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-    assert_equal(@board_to_s, board.to_s)
+    assert_equal(@board_to_s, @board.to_s)
   end
 end
