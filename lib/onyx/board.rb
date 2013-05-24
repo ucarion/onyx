@@ -27,7 +27,7 @@ module Onyx
       board.black_castle_k = args[2].include?('k')
       board.black_castle_q = args[2].include?('q')
 
-      board.en_passant_loc = (args[3] == '-' ? -1 : args[3].to_i)
+      board.en_passant_loc = (args[3] == '-' ? -1 : args[3].to_position)
 
       board.fifty_move_rule = args[4].to_i
 
@@ -129,5 +129,10 @@ end
 class String
   def is_i?
     !!(self =~ /^[-+]?[0-9]+$/)
+  end
+
+  # convert string to index (a1 --> 0, h8 --> 63)
+  def to_position
+    (8 * (self[0].ord - 'a'.ord) + self[1].to_i)
   end
 end
