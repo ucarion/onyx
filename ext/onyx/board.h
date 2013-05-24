@@ -6,6 +6,9 @@
 
 typedef unsigned long long Bitboard;
 
+#include "move.h"
+#include "utils.h"
+
 typedef struct {
     Bitboard white_pawns;
     Bitboard white_knights;
@@ -37,5 +40,7 @@ typedef struct {
 } Board;
 
 Board* new_empty_board();
+void update_special_bitboards(Board* board);
+void make_move(Board* board, Move move);
 
 #endif
