@@ -50,4 +50,8 @@ BOARD
       @board.black_castle_q?
     end
   end
+
+  def test_can_do_move
+    @board.do_move(Onyx::Move.new(12, 12 + 16, 1, false, 0))
+  end
 end
