@@ -42,6 +42,7 @@ VALUE method_board_set_ep(VALUE self, VALUE ep);
 VALUE method_board_fmr(VALUE self);
 VALUE method_board_set_fmr(VALUE self, VALUE fmr);
 VALUE method_board_do_move(VALUE self, VALUE move);
+VALUE method_board_undo(VALUE self, VALUE aMove);
 
 void Init_onyx();
 

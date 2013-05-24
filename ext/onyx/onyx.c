@@ -52,6 +52,7 @@ void Init_onyx() {
     rb_define_method(cBoard, "fifty_move_rule", method_board_fmr, 0);
     rb_define_method(cBoard, "fifty_move_rule=", method_board_set_fmr, 1);
     rb_define_method(cBoard, "do_move", method_board_do_move, 1);
+    rb_define_method(cBoard, "undo_move", method_board_undo, 1);
 }
 
 int unwrap_move(VALUE move) {
@@ -379,6 +380,18 @@ VALUE method_board_do_move(VALUE self, VALUE aMove) {
     move = unwrap_move(aMove);
 
     make_move(board, move);
+
+    return Qnil;
+}
+
+VALUE method_board_undo(VALUE self, VALUE aMove) {
+    Board* board;
+    int move;
+
+    Data_Get_Struct(self, Board, board);
+    move = unwrap_move(aMove);
+
+    unmake_move(board, move);
 
     return Qnil;
 }
