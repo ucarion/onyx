@@ -121,4 +121,26 @@ BOARD
     assert_equal(nil, board[35])
     assert_equal(nil, board[36])
   end
+
+  def test_undo_move_update_ep
+    move = Onyx::Move.new(12, 12 + 16, Onyx::Move::WHITE_PAWN, false, Onyx::Move::FLAG_NO_FLAG)
+    @board.do_move(move)
+    @board.undo_move(move)
+
+    assert_equal(:white_pawn, @board[12])
+    assert_equal(nil, @board[12 + 16])
+    assert_equal(-1, @board.en_passant_loc)
+  end
+
+  def test_undo_move_update_castling_rights
+    board = Onyx::Board.new_from_fen('r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4')
+    move = Onyx::Move.new(4, 6, Onyx::Move::WHITE_KING, false, Onyx::Move::FLAG_OO)
+
+    board.do_move(move)
+    board.undo_move(move)
+
+    assert_equal(:white_king, board[4])
+    assert_equal(:white_rook, board[7])
+    assert(board.white_castle_k? && board.white_castle_q?)
+  end
 end
