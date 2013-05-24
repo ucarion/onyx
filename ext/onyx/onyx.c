@@ -12,6 +12,27 @@ void Init_onyx() {
     rb_define_method(cMove, "capture?", method_move_capture, 0);
     rb_define_method(cMove, "flag", method_move_flag, 0);
     rb_define_method(cMove, "promotion?", method_move_promotion, 0);
+    rb_define_const(cMove, "NO_PIECE", INT2NUM(MOVE_NO_PIECE));
+    rb_define_const(cMove, "WHITE_PAWN", INT2NUM(MOVE_WHITE_PAWN));
+    rb_define_const(cMove, "BLACK_PAWN", INT2NUM(MOVE_BLACK_PAWN));
+    rb_define_const(cMove, "WHITE_KNIGHT", INT2NUM(MOVE_WHITE_KNIGHT));
+    rb_define_const(cMove, "BLACK_KNIGHT", INT2NUM(MOVE_BLACK_KNIGHT));
+    rb_define_const(cMove, "WHITE_BISHOP", INT2NUM(MOVE_WHITE_BISHOP));
+    rb_define_const(cMove, "BLACK_BISHOP", INT2NUM(MOVE_BLACK_BISHOP));
+    rb_define_const(cMove, "WHITE_ROOK", INT2NUM(MOVE_WHITE_ROOK));
+    rb_define_const(cMove, "BLACK_ROOK", INT2NUM(MOVE_BLACK_ROOK));
+    rb_define_const(cMove, "WHITE_QUEEN", INT2NUM(MOVE_WHITE_QUEEN));
+    rb_define_const(cMove, "BLACK_QUEEN", INT2NUM(MOVE_BLACK_QUEEN));
+    rb_define_const(cMove, "WHITE_KING", INT2NUM(MOVE_WHITE_KING));
+    rb_define_const(cMove, "BLACK_KING", INT2NUM(MOVE_BLACK_KING));
+    rb_define_const(cMove, "FLAG_NO_FLAG", INT2NUM(MOVE_FLAG_NO_FLAG));
+    rb_define_const(cMove, "FLAG_OO", INT2NUM(MOVE_FLAG_OO));
+    rb_define_const(cMove, "FLAG_OOO", INT2NUM(MOVE_FLAG_OOO));
+    rb_define_const(cMove, "FLAG_EP", INT2NUM(MOVE_FLAG_EP));
+    rb_define_const(cMove, "FLAG_PROMO_KNIGHT", INT2NUM(MOVE_FLAG_PROMO_KNIGHT));
+    rb_define_const(cMove, "FLAG_PROMO_BISHOP", INT2NUM(MOVE_FLAG_PROMO_BISHOP));
+    rb_define_const(cMove, "FLAG_PROMO_ROOK", INT2NUM(MOVE_FLAG_PROMO_ROOK));
+    rb_define_const(cMove, "FLAG_PROMO_QUEEN", INT2NUM(MOVE_FLAG_PROMO_QUEEN));
 
     rb_define_singleton_method(cBoard, "new", method_board_new, 0);
     rb_define_method(cBoard, "set", method_board_set, 2);
