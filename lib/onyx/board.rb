@@ -1,8 +1,5 @@
 module Onyx
   class Board
-    private :white_castle_k=, :white_castle_q=, :black_castle_k=, :black_castle_q=
-    private :en_passant_loc=, :fifty_move_rule=
-
     def self.new_from_fen(fen)
       board = Board.new
       args = fen.split
@@ -30,7 +27,7 @@ module Onyx
       board.black_castle_k = args[2].include?('k')
       board.black_castle_q = args[2].include?('q')
 
-      board.en_passant_loc = (args[3] = '-' ? -1 : args[3].to_i)
+      board.en_passant_loc = (args[3] == '-' ? -1 : args[3].to_i)
 
       board.fifty_move_rule = args[4].to_i
 
