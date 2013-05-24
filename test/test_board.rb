@@ -51,7 +51,74 @@ BOARD
     end
   end
 
-  def test_can_do_move
-    @board.do_move(Onyx::Move.new(12, 12 + 16, 1, false, 0))
+  def test_move_change_piece_locs
+    @board.do_move(Onyx::Move.new(12, 12 + 16, Onyx::Move::WHITE_PAWN, false, Onyx::Move::FLAG_NO_FLAG))
+
+    assert_equal(nil, @board[12])
+    assert_equal(:white_pawn, @board[12 + 16])
+  end
+
+  def test_move_update_ep
+    @board.do_move(Onyx::Move.new(12, 12 + 16, Onyx::Move::WHITE_PAWN, false, Onyx::Move::FLAG_NO_FLAG))
+
+    assert_equal(12 + 8, @board.en_passant_loc)
+  end
+
+  def test_move_change_side_to_move
+    assert(@board.white_to_move?)
+
+    @board.do_move(Onyx::Move.new(12, 12 + 16, Onyx::Move::WHITE_PAWN, false, Onyx::Move::FLAG_NO_FLAG))
+
+    assert(!@board.white_to_move?)
+  end
+
+  def test_move_castle
+    board = Onyx::Board.new_from_fen('r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4')
+
+    board.do_move(Onyx::Move.new(4, 6, Onyx::Move::WHITE_KING, false, Onyx::Move::FLAG_OO));
+
+    assert_equal(nil, board[4])
+    assert_equal(nil, board[7])
+    assert_equal(:white_king, board[6])
+    assert_equal(:white_rook, board[5])
+
+    assert(!(board.white_castle_k? || board.white_castle_q?))
+  end
+
+  def test_move_promotion
+    board = Onyx::Board.new_from_fen('8/8/8/8/8/4k3/p7/4K3 b - - 0 1')
+
+    board.do_move(Onyx::Move.new(8, 0, Onyx::Move::BLACK_PAWN, false, Onyx::Move::FLAG_PROMO_QUEEN))
+
+    assert_equal(nil, board[8])
+    assert_equal(:black_queen, board[0])
+  end
+
+  def test_lose_castling_rights
+    board = Onyx::Board.new_from_fen('r1bqkbnr/ppp2ppp/2np4/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4')
+
+    board.do_move(Onyx::Move.new(7, 6, Onyx::Move::WHITE_ROOK, false, Onyx::Move::FLAG_NO_FLAG))
+
+    assert(!board.white_castle_k?)
+    assert(board.white_castle_q?)
+  end
+
+  def test_capture
+    board = Onyx::Board.new_from_fen('rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1')
+
+    board.do_move(Onyx::Move.new(28, 28 + 7, Onyx::Move::WHITE_PAWN, true, Onyx::Move::FLAG_NO_FLAG))
+
+    assert_equal(:white_pawn, board[28 + 7])
+    assert_equal(nil, board[28])
+  end
+
+  def test_capture_ep
+    board = Onyx::Board.new_from_fen('r1bqkbnr/ppp1pppp/2n5/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1')
+
+    board.do_move(Onyx::Move.new(36, 36 + 7, Onyx::Move::WHITE_PAWN, true, Onyx::Move::FLAG_EP))
+
+    assert_equal(:white_pawn, board[36 + 7])
+    assert_equal(nil, board[35])
+    assert_equal(nil, board[36])
   end
 end
