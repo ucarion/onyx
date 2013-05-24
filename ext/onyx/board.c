@@ -56,8 +56,8 @@ void make_move(Board* board, Move move) {
 
     from = get_from(move);
     to = get_to(move);
-    from_mask = 1ULL << from;
-    to_mask = 1ULL << to;
+    from_mask = square_at(from);
+    to_mask = square_at(to);
     piece = get_piece(move);
     capt = get_capture(move);
     flag = get_flag(move);
@@ -74,7 +74,7 @@ void make_move(Board* board, Move move) {
         if (flag == MOVE_FLAG_EP)
             to_remove = board->white_to_move ? to - 8 : to + 8;
 
-        to_remove_mask = 1ULL << to_remove;
+        to_remove_mask = square_at(to_remove);
 
         board->white_pawns &= ~to_remove_mask;
         board->white_knights &= ~to_remove_mask;
@@ -186,13 +186,13 @@ void make_move(Board* board, Move move) {
         
         case MOVE_WHITE_KING:
             if (flag == MOVE_FLAG_OO) {
-                Bitboard rook_move_mask = (1ULL << 5) | (1ULL << 7);
-                board->white_king = 1ULL << 6;
+                Bitboard rook_move_mask = square_at(5) | square_at(7);
+                board->white_king = square_at(6);
                 board->white_rooks ^= rook_move_mask;
             }
             else if (flag == MOVE_FLAG_OOO) {
-                Bitboard rook_move_mask = 1ULL | (1ULL << 3);
-                board->white_king = 1ULL << 2;
+                Bitboard rook_move_mask = square_at(0) | square_at(3);
+                board->white_king = square_at(2);
                 board->white_rooks ^= rook_move_mask;
             }
             else
@@ -201,13 +201,13 @@ void make_move(Board* board, Move move) {
         
         case MOVE_BLACK_KING:
             if (flag == MOVE_FLAG_OO) {
-                Bitboard rook_move_mask = (1ULL << (5 + 56)) | (1ULL << (7 + 56));
-                board->black_king = 1ULL << (6 + 56);
+                Bitboard rook_move_mask = square_at(5 + 56) | square_at(7 + 56);
+                board->black_king = square_at(6 + 56);
                 board->black_rooks ^= rook_move_mask;
             }
             else if (flag == MOVE_FLAG_OOO) {
-                Bitboard rook_move_mask = (1ULL << 56) | (1ULL << (3 + 56));
-                board->black_king = 1ULL << (2 + 56);
+                Bitboard rook_move_mask = square_at(56) | square_at(56 + 3);
+                board->black_king = square_at(56 + 2);
                 board->black_rooks ^= rook_move_mask;
             }
             else
