@@ -91,28 +91,7 @@ VALUE method_move_to(VALUE self) {
 }
 VALUE method_move_piece(VALUE self) {
     int move = unwrap_move(self);
-    switch (INT2NUM(get_piece(move))) {
-    case MOVE_WHITE_PAWN:
-    case MOVE_BLACK_PAWN:
-        return ID2SYM(rb_intern("pawn"));
-    case MOVE_WHITE_KNIGHT:
-    case MOVE_BLACK_KNIGHT:
-        return ID2SYM(rb_intern("knight"));
-    case MOVE_WHITE_BISHOP:
-    case MOVE_BLACK_BISHOP:
-        return ID2SYM(rb_intern("bishop"));
-    case MOVE_WHITE_ROOK:
-    case MOVE_BLACK_ROOK:
-        return ID2SYM(rb_intern("rook"));
-    case MOVE_WHITE_QUEEN:
-    case MOVE_BLACK_QUEEN:
-        return ID2SYM(rb_intern("queen"));
-    case MOVE_WHITE_KING:
-    case MOVE_BLACK_KING:
-        return ID2SYM(rb_intern("king"));
-    default:
-        return ID2SYM(rb_intern("unknown piece"));
-    }
+    return INT2NUM(get_piece(move));
 }
 
 VALUE method_move_capture(VALUE self) {
