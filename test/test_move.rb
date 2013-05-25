@@ -24,7 +24,7 @@ class MoveTest < Onyx::TestCase
     assert(!move.promotion?)
   end
 
-  def test_capture
+  def test_move_capture
     move = Onyx::Move.new(36, 36 + 7, Onyx::Move::WHITE_PAWN, Onyx::Move::BLACK_PAWN, Onyx::Move::FLAG_EP)
 
     assert(move.capture?)
