@@ -106,7 +106,7 @@ BOARD
   def test_capture
     board = Onyx::Board.new_from_fen('rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1')
 
-    board.do_move(Onyx::Move.new(28, 28 + 7, Onyx::Move::WHITE_PAWN, true, Onyx::Move::FLAG_NO_FLAG))
+    board.do_move(Onyx::Move.new(28, 28 + 7, Onyx::Move::WHITE_PAWN, Onyx::Move::BLACK_PAWN, Onyx::Move::FLAG_NO_FLAG))
 
     assert_equal(:white_pawn, board[28 + 7])
     assert_equal(nil, board[28])
@@ -115,7 +115,7 @@ BOARD
   def test_capture_ep
     board = Onyx::Board.new_from_fen('r1bqkbnr/ppp1pppp/2n5/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1')
 
-    board.do_move(Onyx::Move.new(36, 36 + 7, Onyx::Move::WHITE_PAWN, true, Onyx::Move::FLAG_EP))
+    board.do_move(Onyx::Move.new(36, 36 + 7, Onyx::Move::WHITE_PAWN, Onyx::Move::BLACK_PAWN, Onyx::Move::FLAG_EP))
 
     assert_equal(:white_pawn, board[36 + 7])
     assert_equal(nil, board[35])
