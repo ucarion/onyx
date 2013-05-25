@@ -66,7 +66,9 @@ VALUE method_move_new(VALUE class, VALUE from, VALUE to, VALUE piece, VALUE capt
     MoveWrapper *one;
     int move;
 
-    move = new_move(NUM2INT(from), NUM2INT(to), NUM2INT(piece), RTEST(capture),  NUM2INT(flag));
+    char capt = (capture == Qfalse ? MOVE_NO_PIECE : NUM2INT(capture));
+
+    move = new_move(NUM2INT(from), NUM2INT(to), NUM2INT(piece), capt, NUM2INT(flag));
     moveWrapper = Data_Make_Struct(cMove, MoveWrapper, 0, free, one);
 
     one->val = move;
