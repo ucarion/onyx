@@ -21,6 +21,7 @@ VALUE method_move_from(VALUE self);
 VALUE method_move_to(VALUE self);
 VALUE method_move_piece(VALUE self);
 VALUE method_move_capture(VALUE self);
+VALUE method_move_get_capture(VALUE self);
 VALUE method_move_flag(VALUE self);
 VALUE method_move_promotion(VALUE self);
 

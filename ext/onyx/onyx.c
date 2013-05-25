@@ -10,6 +10,7 @@ void Init_onyx() {
     rb_define_method(cMove, "to", method_move_to, 0);
     rb_define_method(cMove, "piece", method_move_piece, 0);
     rb_define_method(cMove, "capture?", method_move_capture, 0);
+    rb_define_method(cMove, "captured", method_move_get_capture, 0);
     rb_define_method(cMove, "flag", method_move_flag, 0);
     rb_define_method(cMove, "promotion?", method_move_promotion, 0);
     rb_define_const(cMove, "NO_PIECE", INT2NUM(MOVE_NO_PIECE));
@@ -119,6 +120,11 @@ VALUE method_move_capture(VALUE self) {
     if (get_capture(move))
         return Qtrue;
     return Qfalse;
+}
+
+VALUE method_move_get_capture(VALUE self) {
+    int move = unwrap_move(self);
+    return INT2NUM(get_capture(move));
 }
 
 VALUE method_move_flag(VALUE self) {
