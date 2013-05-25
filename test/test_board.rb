@@ -171,11 +171,8 @@ BOARD
     board = Onyx::Board.new_from_fen('rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1')
     move = Onyx::Move.new(28, 28 + 7, Onyx::Move::WHITE_PAWN, Onyx::Move::BLACK_PAWN, Onyx::Move::FLAG_NO_FLAG)
 
-    puts board
     board.do_move(move)
-    puts board
     board.undo_move(move)
-    puts board
 
     assert_equal(:white_pawn, board[28])
     assert_equal(:black_pawn, board[28 + 7])
