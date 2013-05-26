@@ -5,8 +5,10 @@
 #include "utils.h"
 
 extern Bitboard king_movelocs[64];
+extern Bitboard knight_movelocs[64];
 
 void movegen_init(void);
 void init_movegen_kings(void);
+void init_movegen_knights(void);
 
 #endif
