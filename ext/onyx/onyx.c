@@ -37,6 +37,7 @@ void Init_onyx() {
 
     rb_define_singleton_method(cBoard, "new", method_board_new, 0);
     rb_define_singleton_method(cBoard, "kingmoves", method_board_kingmoves, 1);
+    rb_define_singleton_method(cBoard, "knightmoves", method_board_knightmoves, 1);
     rb_define_method(cBoard, "set", method_board_set, 2);
     rb_define_method(cBoard, "[]", method_board_get, 1);
     rb_define_method(cBoard, "white_to_move?", method_board_white_to_move, 0);
@@ -136,6 +137,11 @@ VALUE method_board_new(VALUE class) {
 // This probably should be removed, but for now I keep it for Ruby-side testing.
 VALUE method_board_kingmoves(VALUE class, VALUE at) {
     return ULL2NUM(king_movelocs[NUM2INT(at)]);
+}
+
+// See previous comment
+VALUE method_board_knightmoves(VALUE class, VALUE at) {
+    return ULL2NUM(knight_movelocs[NUM2INT(at)]);
 }
 
 VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName) {
