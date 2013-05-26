@@ -32,6 +32,12 @@ BOARD
     @board = Onyx::Board.new_from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
   end
 
+  def bitmap(*bits)
+    map = 0
+    bits.each { |i| map |= 1 << i }
+    map
+  end
+
   def test_can_create_board
     assert_nothing_raised do
       Onyx::Board.new
@@ -176,5 +182,11 @@ BOARD
 
     assert_equal(:white_pawn, board[28])
     assert_equal(:black_pawn, board[28 + 7])
+  end
+
+  def test_kinglocs
+    assert_equal(bitmap(1, 8, 9), Onyx::Board.kingmoves(0))
+    assert_equal(bitmap(0, 2, 8, 9, 10), Onyx::Board.kingmoves(1))
+    assert_equal(bitmap(0, 1, 2, 8, 10, 16, 17, 18), Onyx::Board.kingmoves(9))
   end
 end
