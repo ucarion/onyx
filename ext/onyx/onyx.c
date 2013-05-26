@@ -57,6 +57,7 @@ void Init_onyx() {
     rb_define_method(cBoard, "do_move", method_board_do_move, 1);
     rb_define_method(cBoard, "undo_move", method_board_undo, 1);
 
+    init_utils();
     movegen_init();
 }
 
