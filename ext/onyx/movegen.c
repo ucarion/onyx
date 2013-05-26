@@ -4,6 +4,8 @@ Bitboard king_movelocs[64];
 Bitboard knight_movelocs[64];
 Bitboard rank_masks[64];
 Bitboard file_masks[64];
+Bitboard a1h8_masks[64];
+Bitboard a8h1_masks[64];
 
 void movegen_init(void) {
     init_movegen_kings();
@@ -104,5 +106,57 @@ void init_movegen_rook_masks(void) {
         rank_masks[i] |= to_bitboard(rank, 4) | to_bitboard(rank, 5) | to_bitboard(rank, 6);
         file_masks[i]  = to_bitboard(1, file) | to_bitboard(2, file) | to_bitboard(3, file);
         file_masks[i] |= to_bitboard(4, file) | to_bitboard(5, file) | to_bitboard(6, file);
+    }
+}
+
+void init_movegen_a1h8_masks(void) {
+    int i;
+
+    for (i = 0; i < 64; i++) {
+        int rank;
+        int file;
+        int diag;
+
+        rank = i / 8;
+        file = i % 8;
+        diag = file - rank;
+
+        a1h8_masks[i] = 0;
+
+        if (diag >= 0) {
+            int j;
+            for (j = 1; j < 7 - diag; j++)
+                a1h8_masks[i] |= to_bitboard(j, diag + j);
+        } else {
+            int j;
+            for (j = 1; j < 7 + diag; j++)
+                a1h8_masks[i] |= to_bitboard(j - diag, j);
+        }
+    }
+}
+
+void init_movegen_a8h1_masks(void) {
+    int i;
+
+    for (i = 0; i < 64; i++) {
+        int rank;
+        int file;
+        int diag;
+
+        rank = i / 8;
+        file = i % 8;
+        diag = file + rank;
+
+        a8h1_masks[i] = 0;
+
+        if (diag < 8) {
+            int j;
+            for (j = 1; j < diag; j++)
+                a8h1_masks[i] |= to_bitboard(diag - j, j);
+        } else {
+            int j;
+            for (j = 2; j < 15 - diag; j++)
+                a8h1_masks[i] |= to_bitboard(diag + j - 8, 8 - j);
+        }
     }
 }
