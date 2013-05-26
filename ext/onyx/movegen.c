@@ -19,28 +19,28 @@ void init_movegen_kings(void) {
 
         if (file > 0) {
             if (rank > 0)
-                king_movelocs[i] |= 1ULL << ((rank - 1) * 8 + file - 1);
+                king_movelocs[i] |= to_bitboard(rank - 1, file - 1);
 
-            king_movelocs[i] |= 1ULL << (rank * 8 + file - 1);
+            king_movelocs[i] |= to_bitboard(rank, file - 1);
 
             if (rank < 7)
-                king_movelocs[i] |= 1ULL << ((rank + 1) * 8 + file - 1);
+                king_movelocs[i] |= to_bitboard(rank + 1, file - 1);
         }
 
         if (rank > 0)
-            king_movelocs[i] |= 1ULL << ((rank - 1) * 8 + file);
+            king_movelocs[i] |= to_bitboard(rank - 1, file);
 
         if (rank < 7)
-            king_movelocs[i] |= 1ULL << ((rank + 1) * 8 + file);
+            king_movelocs[i] |= to_bitboard(rank + 1, file);
 
         if (file < 7) {
             if (rank > 0)
-                king_movelocs[i] |= 1ULL << ((rank - 1) * 8 + file + 1);
+                king_movelocs[i] |= to_bitboard(rank - 1, file + 1);
 
-            king_movelocs[i] |= 1ULL << (rank * 8 + file + 1);
+            king_movelocs[i] |= to_bitboard(rank, file + 1);
 
             if (rank < 7)
-                king_movelocs[i] |= 1ULL << ((rank + 1) * 8 + file + 1);
+                king_movelocs[i] |= to_bitboard(rank + 1, file + 1);
         }
     }
 }
