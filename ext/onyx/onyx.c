@@ -36,6 +36,7 @@ void Init_onyx() {
     rb_define_const(cMove, "FLAG_PROMO_QUEEN", INT2NUM(MOVE_FLAG_PROMO_QUEEN));
 
     rb_define_singleton_method(cBoard, "new", method_board_new, 0);
+    rb_define_singleton_method(cBoard, "kingmoves", method_board_kingmoves, 1);
     rb_define_method(cBoard, "set", method_board_set, 2);
     rb_define_method(cBoard, "[]", method_board_get, 1);
     rb_define_method(cBoard, "white_to_move?", method_board_white_to_move, 0);
@@ -54,6 +55,8 @@ void Init_onyx() {
     rb_define_method(cBoard, "fifty_move_rule=", method_board_set_fmr, 1);
     rb_define_method(cBoard, "do_move", method_board_do_move, 1);
     rb_define_method(cBoard, "undo_move", method_board_undo, 1);
+
+    movegen_init();
 }
 
 int unwrap_move(VALUE move) {
@@ -128,6 +131,11 @@ VALUE method_board_new(VALUE class) {
     rb_obj_call_init(rb_board, 0, 0);
 
     return rb_board;
+}
+
+// This probably should be removed, but for now I keep it for Ruby-side testing.
+VALUE method_board_kingmoves(VALUE class, VALUE at) {
+    return ULL2NUM(king_movelocs[NUM2INT(at)]);
 }
 
 VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName) {

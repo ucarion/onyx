@@ -5,6 +5,7 @@
 #include "move.h"
 #include "board.h"
 #include "utils.h"
+#include "movegen.h"
 
 VALUE mOnyx; // the Onyx module
 VALUE cMove; // the Onyx::Move class
@@ -26,6 +27,7 @@ VALUE method_move_flag(VALUE self);
 VALUE method_move_promotion(VALUE self);
 
 VALUE method_board_new(VALUE class);
+VALUE method_board_kingmoves(VALUE class, VALUE at);
 VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName);
 VALUE method_board_get(VALUE self, VALUE positionVal);
 VALUE method_board_white_to_move(VALUE self);
