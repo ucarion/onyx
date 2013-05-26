@@ -2,10 +2,13 @@
 
 Bitboard king_movelocs[64];
 Bitboard knight_movelocs[64];
+Bitboard rank_masks[64];
+Bitboard file_masks[64];
 
 void movegen_init(void) {
     init_movegen_kings();
     init_movegen_knights();
+    init_movegen_rook_masks();
 }
 
 void init_movegen_kings(void) {
@@ -85,5 +88,21 @@ void init_movegen_knights(void) {
             if (rank < 6)
                 knight_movelocs[i] |= to_bitboard(rank + 2, file + 1);
         }
+    }
+}
+
+void init_movegen_rook_masks(void) {
+    int i;
+
+    for (i = 0; i < 64; i++) {
+        int rank, file;
+
+        rank = i / 8;
+        file = i % 8;
+
+        rank_masks[i]  = to_bitboard(rank, 1) | to_bitboard(rank, 2) | to_bitboard(rank, 3);
+        rank_masks[i] |= to_bitboard(rank, 4) | to_bitboard(rank, 5) | to_bitboard(rank, 6);
+        file_masks[i]  = to_bitboard(1, file) | to_bitboard(2, file) | to_bitboard(3, file);
+        file_masks[i] |= to_bitboard(4, file) | to_bitboard(5, file) | to_bitboard(6, file);
     }
 }
