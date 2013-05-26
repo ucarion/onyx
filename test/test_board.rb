@@ -189,4 +189,11 @@ BOARD
     assert_equal(bitmap(0, 2, 8, 9, 10), Onyx::Board.kingmoves(1))
     assert_equal(bitmap(0, 1, 2, 8, 10, 16, 17, 18), Onyx::Board.kingmoves(9))
   end
+
+  def test_knightlocs
+    assert_equal(bitmap(10, 17), Onyx::Board.knightmoves(0))
+    assert_equal(bitmap(16, 18, 11), Onyx::Board.knightmoves(1))
+    assert_equal(bitmap(8, 17, 12, 19), Onyx::Board.knightmoves(2))
+    assert_equal(bitmap(1, 3, 8, 12, 24, 28, 33, 35), Onyx::Board.knightmoves(18))
+  end
 end
