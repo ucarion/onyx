@@ -196,4 +196,9 @@ BOARD
     assert_equal(bitmap(8, 17, 12, 19), Onyx::Board.knightmoves(2))
     assert_equal(bitmap(1, 3, 8, 12, 24, 28, 33, 35), Onyx::Board.knightmoves(18))
   end
+
+  def test_attacked
+    assert(@board.attacked?(16))
+    assert(!@board.attacked?(24))
+  end
 end
