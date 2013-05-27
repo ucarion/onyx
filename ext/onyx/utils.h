@@ -10,5 +10,6 @@ void init_utils(void);
 
 Bitboard square_at(int position);
 Bitboard to_bitboard(int rank, int file);
+int to_index(Bitboard i);
 
 #endif
