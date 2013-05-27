@@ -31,6 +31,8 @@ module Onyx
 
       board.fifty_move_rule = args[4].to_i
 
+      board.update_special_bitboards!
+
       board
     end
 
