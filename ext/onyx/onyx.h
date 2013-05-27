@@ -48,6 +48,7 @@ VALUE method_board_fmr(VALUE self);
 VALUE method_board_set_fmr(VALUE self, VALUE fmr);
 VALUE method_board_do_move(VALUE self, VALUE move);
 VALUE method_board_undo(VALUE self, VALUE aMove);
+VALUE method_board_attacked(VALUE self, VALUE positionVal);
 
 void Init_onyx();
 

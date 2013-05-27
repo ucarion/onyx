@@ -57,6 +57,7 @@ void Init_onyx() {
     rb_define_method(cBoard, "fifty_move_rule=", method_board_set_fmr, 1);
     rb_define_method(cBoard, "do_move", method_board_do_move, 1);
     rb_define_method(cBoard, "undo_move", method_board_undo, 1);
+    rb_define_method(cBoard, "attacked?", method_board_attacked, 1);
 
     init_utils();
     movegen_init();
@@ -407,4 +408,18 @@ VALUE method_board_undo(VALUE self, VALUE aMove) {
     unmake_move(board, move);
 
     return Qnil;
+}
+
+VALUE method_board_attacked(VALUE self, VALUE positionVal) {
+    Board* board;
+    int index;
+
+    Data_Get_Struct(self, Board, board);
+    index = NUM2INT(positionVal);
+
+    printf("%llu", board->all_pieces);
+
+    if (is_attacked(board, index, board->white_to_move))
+        return Qtrue;
+    return Qfalse;
 }
