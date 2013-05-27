@@ -417,8 +417,6 @@ VALUE method_board_attacked(VALUE self, VALUE positionVal) {
     Data_Get_Struct(self, Board, board);
     index = NUM2INT(positionVal);
 
-    printf("%llu", board->all_pieces);
-
     if (is_attacked(board, index, board->white_to_move))
         return Qtrue;
     return Qfalse;
