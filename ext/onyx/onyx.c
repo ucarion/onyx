@@ -40,6 +40,7 @@ void Init_onyx() {
     rb_define_singleton_method(cBoard, "knightmoves", method_board_knightmoves, 1);
     rb_define_method(cBoard, "set", method_board_set, 2);
     rb_define_method(cBoard, "[]", method_board_get, 1);
+    rb_define_method(cBoard, "update_special_bitboards!", method_board_update_special_bitboards, 0);
     rb_define_method(cBoard, "white_to_move?", method_board_white_to_move, 0);
     rb_define_method(cBoard, "white_to_move=", method_board_set_white_to_move, 1);
     rb_define_method(cBoard, "white_castle_k?", method_board_w_oo, 0);
@@ -221,6 +222,16 @@ VALUE method_board_get(VALUE self, VALUE positionVal) {
         return ID2SYM(rb_intern("black_king"));
     else
         return Qnil;
+}
+
+VALUE method_board_update_special_bitboards(VALUE self) {
+    Board* board;
+
+    Data_Get_Struct(self, Board, board);
+
+    update_special_bitboards(board);
+
+    return Qnil;
 }
 
 VALUE method_board_white_to_move(VALUE self) {

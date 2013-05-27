@@ -31,6 +31,7 @@ VALUE method_board_kingmoves(VALUE class, VALUE at);
 VALUE method_board_knightmoves(VALUE class, VALUE at);
 VALUE method_board_set(VALUE self, VALUE positionVal, VALUE pieceName);
 VALUE method_board_get(VALUE self, VALUE positionVal);
+VALUE method_board_update_special_bitboards(VALUE self);
 VALUE method_board_white_to_move(VALUE self);
 VALUE method_board_set_white_to_move(VALUE self, VALUE whiteToMove);
 VALUE method_board_w_oo(VALUE self);
