@@ -119,3 +119,31 @@ void init_movegen_pawns(void) {
         }
     }
 }
+
+bool is_attacked(Board* board, int index, bool white_attacking) {
+    if (white_attacking) {
+        if (black_pawn_attacks[index] & board->white_pawns)
+            return true;
+        if (knight_movelocs[index] & board->white_knights)
+            return true;
+        if (Bmagic(index, board->all_pieces) & (board->white_bishops | board->white_queens))
+            return true;
+        if (Rmagic(index, board->all_pieces) & (board->white_rooks | board->white_queens))
+            return true;
+        if (king_movelocs[index] & board->white_king)
+            return true;
+        return false;
+    } else {
+        if (white_pawn_attacks[index] & board->black_pawns)
+            return true;
+        if (knight_movelocs[index] & board->black_knights)
+            return true;
+        if (Bmagic(index, board->all_pieces) & (board->black_bishops | board->black_queens))
+            return true;
+        if (Rmagic(index, board->all_pieces) & (board->black_rooks | board->black_queens))
+            return true;
+        if (king_movelocs[index] & board->black_king)
+            return true;
+        return false;
+    }
+}

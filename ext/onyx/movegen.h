@@ -15,4 +15,5 @@ void init_movegen_kings(void);
 void init_movegen_knights(void);
 void init_movegen_pawns(void);
 
+bool is_attacked(Board* board, int index, bool white_attacking);
 #endif
