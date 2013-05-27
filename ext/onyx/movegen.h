@@ -7,9 +7,12 @@
 
 extern Bitboard king_movelocs[64];
 extern Bitboard knight_movelocs[64];
+extern Bitboard white_pawn_attacks[64];
+extern Bitboard black_pawn_attacks[64];
 
 void movegen_init(void);
 void init_movegen_kings(void);
 void init_movegen_knights(void);
+void init_movegen_pawns(void);
 
 #endif
