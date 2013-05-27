@@ -198,7 +198,7 @@ BOARD
   end
 
   def test_attacked
-    assert(@board.attacked?(16))
-    assert(!@board.attacked?(24))
+    attacked_squares = (1..6).to_a + (8..15).to_a + (16..23).to_a
+    0.upto(63) { |i| assert_equal(@board.attacked?(i), attacked_squares.include?(i)) }
   end
 end
